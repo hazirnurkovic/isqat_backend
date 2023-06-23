@@ -66,7 +66,7 @@ class UserController extends Controller
        ];
     }
 
-    public function getUserChallenge()
+    public function getUserChallenges()
     {
         
         $user = auth()->user();

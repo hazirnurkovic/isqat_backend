@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\ChallengeController;
 use App\Http\Controllers\UserController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -28,5 +27,5 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('logout', [UserController::class, 'logout']);
     Route::resource('challenges', ChallengeController::class)->only(['index', 'show']);
 
-    Route::post('getUserChallenge',[UserController::class, 'getUserChallenge']);
+    Route::post('getUserChallenges',[UserController::class, 'getUserChallenges']);
 });
