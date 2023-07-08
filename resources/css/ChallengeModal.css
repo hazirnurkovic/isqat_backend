@@ -1,0 +1,49 @@
+.challenge-modal-overlay {
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.challenge-modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 8px;
+  max-width: 400px;
+  background-color: #fff;
+  padding: 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.challenge-modal-title {
+  margin-bottom: 20px;
+}
+
+.challenge-modal-input {
+  margin-bottom: 10px;
+}
+
+.challenge-modal-input label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.challenge-modal-input input,
+.challenge-modal-input textarea {
+  width: 100%;
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+.challenge-modal-button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+}

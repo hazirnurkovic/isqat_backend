@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('alternative_challenges', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->string('value');
+            $table->longText('value');
             $table->foreignId('challenge_id')->constrained();
             $table->timestamps();
         });

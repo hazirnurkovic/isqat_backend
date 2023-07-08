@@ -5,8 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\EditChallengeRequest;
 use App\Http\Requests\StoreChallengeRequest;
 use App\Models\Challenge;
-use Illuminate\Http\Request;
-use Illuminate\View\View;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class ChallengeController extends Controller
 {

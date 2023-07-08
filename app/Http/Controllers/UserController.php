@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Observers\UserObserver;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Http\Request;
@@ -15,22 +16,21 @@ class UserController extends Controller
     public function register(Request $request)
     {
         $fields = $request->validate([
-            'username' => 'required|string',
+            'username' => 'required|string|unique:users',
             'email' => 'required|string|email|unique:users',
             'password' => 'required|string'
         ]);
 
+
         $user = User::create([
             'username' => $fields['username'],
             'email' => $fields['email'],
-            'password' => bcrypt($fields['password'])
+            'password' => bcrypt($fields['password']),
         ]);
-
-        $token = $user->createToken('isqatToken')->plainTextToken;
 
         return response()->json([
             'user' => $user,
-            'token' => $token,
+            'token' => $user->remember_token
         ], 201);
     }
 
@@ -50,9 +50,13 @@ class UserController extends Controller
         }
         $token = $user->createToken('isqatToken')->plainTextToken;
 
+        $user->update([
+            'remember_token' => $token
+        ]);
+
         return response()->json([
             'user' => $user,
-            'token' => $token
+            'token' => $user->remember_token
         ], 201);
     }
 

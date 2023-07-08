@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ChallengeController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -21,6 +22,8 @@ use Illuminate\Support\Facades\Route;
 Route::post('register', [UserController::class, 'register']);
 Route::post('login', [UserController::class, 'login']);
 
+Route::post('verify_token', [AuthController::class, 'verifyToken']);
+
 //only logged in users
 Route::middleware(['auth:sanctum'])->group(function () {
     
@@ -29,3 +32,4 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::post('getUserChallenges',[UserController::class, 'getUserChallenges']);
 });
+
