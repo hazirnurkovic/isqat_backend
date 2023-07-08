@@ -93,12 +93,11 @@ class UserController extends Controller
                 'disabled' => false
             ], 200);
         }
-        else
-        {
-            return response()->json([
-                'challenge_id' => $user->challenge_id,
-                'disabled' => true
-            ], 200);
-        }
+    
+        return response()->json([
+            'challenge_id' => $user->challenge_id,
+            'disabled' => true
+        ], 200);
+        
     }
 }
