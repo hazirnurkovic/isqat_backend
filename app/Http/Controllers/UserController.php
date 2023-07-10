@@ -120,9 +120,7 @@ class UserController extends Controller
                 'challenge_id' => $challenge_id
             ]);
 
-            return response()->json([
-                'message' => 'Svaka cast. Nadamo se da si uzivao/la u toku ovog izazova. Nastavi tako!'
-            ]);
+            return $user;
         }
         catch(ModelNotFoundException $e)
         {
