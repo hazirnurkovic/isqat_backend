@@ -30,6 +30,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('logout', [UserController::class, 'logout']);
     Route::resource('challenges', ChallengeController::class)->only(['index', 'show']);
 
-    Route::post('getUserChallenges',[UserController::class, 'getUserChallenges']);
+    Route::post('getUserChallenges', [UserController::class, 'getUserChallenges']);
+    Route::post('updateUserChallenge', [UserController::class, 'updateUserChallenge']);
 });
 
