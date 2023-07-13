@@ -17,7 +17,6 @@ class AlternativeChallengeRequest extends FormRequest
         return [
             'title' => 'string|required',
             'value' => 'string|required',
-            'challenge_id' => 'integer|required'
         ];
     }
 }

@@ -6,9 +6,12 @@ use App\Models\User;
 use App\Observers\UserObserver;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\HasApiTokens;
+
+use function Pest\Laravel\json;
 
 class UserController extends Controller
 {
@@ -61,7 +64,7 @@ class UserController extends Controller
     }
 
 
-    public function logout(Request $request)
+    public function logout()
     {
        auth()->user()->tokens()->delete();
 
@@ -99,5 +102,38 @@ class UserController extends Controller
             'disabled' => true
         ], 200);
         
+    }
+
+    public function updateUserChallenge(Request $request)
+    {
+        $user = auth()->user();
+
+        $user->challenge_id = $user->challenge_id ?? 1;
+        if($request->challenge_id < $user->challenge_id)
+        {
+            return response()->json([
+                'message' => "Drago nam je da si se vratio/la ponovo da rijesis ovaj zadatak!",
+                'user' => $user, 
+                'token' => $user->remember_token
+            ],200);
+        }
+
+        try
+        {
+            $user->challenge_id ++;
+            $user->save();
+
+            return response()->json([
+                'message' => 'Uspjesno zavrsen izazov. Svaka cast!',
+                'user' => $user,
+                'token' => $user->remember_token
+            ], 200);
+        } 
+        catch (ModelNotFoundException $e)
+        {
+            return response()->json([
+                'message' => $e
+            ], 404);
+        }
     }
 }
