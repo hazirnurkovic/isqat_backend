@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AlternativeChallengeController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ChallengeController;
 use App\Http\Controllers\UserController;
@@ -29,6 +30,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     
     Route::post('logout', [UserController::class, 'logout']);
     Route::resource('challenges', ChallengeController::class)->only(['index', 'show']);
+    Route::resource('alternative_challenges', AlternativeChallengeController::class)->only(['index', 'show']);
 
     Route::post('getUserChallenges', [UserController::class, 'getUserChallenges']);
     Route::post('updateUserChallenge', [UserController::class, 'updateUserChallenge']);

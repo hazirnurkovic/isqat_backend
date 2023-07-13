@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->longText('value');
-            $table->foreignId('challenge_id')->constrained();
             $table->timestamps();
         });
     }

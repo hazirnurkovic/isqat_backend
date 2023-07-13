@@ -11,6 +11,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\HasApiTokens;
 
+use function Pest\Laravel\json;
+
 class UserController extends Controller
 {
     use HasApiTokens, HasFactory;
@@ -106,27 +108,32 @@ class UserController extends Controller
     {
         $user = auth()->user();
 
-        if(empty($request->challenge_id) || $request->challenge_id < $user->challenge_id)
+        $user->challenge_id = $user->challenge_id ?? 1;
+        if($request->challenge_id < $user->challenge_id)
         {
             return response()->json([
-                'message' => 'You have already completed this task! Well done.'
-            ], 201);
+                'message' => "Drago nam je da si se vratio/la ponovo da rijesis ovaj zadatak!",
+                'user' => $user, 
+                'token' => $user->remember_token
+            ],200);
         }
 
-        $challenge_id = $user->challenge_id + 1;
-
-        try{
-            $user->update([
-                'challenge_id' => $challenge_id
-            ]);
-
-            return $user;
-        }
-        catch(ModelNotFoundException $e)
+        try
         {
-            return $e;
+            $user->challenge_id ++;
+            $user->save();
+
+            return response()->json([
+                'message' => 'Uspjesno zavrsen izazov. Svaka cast!',
+                'user' => $user,
+                'token' => $user->remember_token
+            ], 200);
+        } 
+        catch (ModelNotFoundException $e)
+        {
+            return response()->json([
+                'message' => $e
+            ], 404);
         }
-
-
     }
 }

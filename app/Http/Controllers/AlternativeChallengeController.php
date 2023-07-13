@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\AlternativeChallengeRequest;
 use App\Models\AlternativeChallenge;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class AlternativeChallengeController extends Controller
 {

@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\AlternativeChallengeController;
 use App\Http\Controllers\ChallengeController;
 use App\Http\Controllers\ProfileController;
+use App\Models\AlternativeChallenge;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -36,6 +38,12 @@ Route::middleware(['auth', 'is_admin'])->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::resource('challenges', ChallengeController::class);
+    Route::resource('alternative_challenges', AlternativeChallengeController::class);
+
+    Route::get('alternative_challenge', function() {
+        return  Inertia::render('Alternative_Challenges');
+    })->name("alternative_challenge");
+    
 });
 
 require __DIR__.'/auth.php';
