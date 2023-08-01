@@ -33,6 +33,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::resource('alternative_challenges', AlternativeChallengeController::class)->only(['index', 'show']);
 
     Route::post('getUserChallenges', [UserController::class, 'getUserChallenges']);
+    Route::get('getUserChallenge/{challenge_id}', [UserController::class, 'getUserChallenge']);
     Route::post('updateUserChallenge', [UserController::class, 'updateUserChallenge']);
 });
 
