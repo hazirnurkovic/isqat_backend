@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Observers\UserObserver;
+use App\Services\UserService;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -73,67 +74,22 @@ class UserController extends Controller
        ];
     }
 
-    public function getUserChallenges()
+    public function getUserChallenges(UserService $userService)
     {
+        $challenges = $userService->getUserChallenges();
         
-        $user = auth()->user();
-        $today = Carbon::now()->format('Y-m-d');
-        $user_updated = Carbon::parse($user->updated_at)->format('Y-m-d');
-        
-        if($user->challenge_id == 1 || $user->challenge_id == null)
-        {
-            return response()->json([
-                'challenge_id' => 1,
-                'disabled' => false
-            ], 200);
-        }
-
-
-        if ($today > $user_updated)
-        {
-            return response()->json([
-                'challenge_id' => $user->challenge_id,
-                'disabled' => false
-            ], 200);
-        }
-    
-        return response()->json([
-            'challenge_id' => $user->challenge_id,
-            'disabled' => true
-        ], 200);
-        
+        return response()->json($challenges, 200);
     }
 
-    public function updateUserChallenge(Request $request)
+    public function getUserChallenge($challengeId, UserService $userService)
     {
-        $user = auth()->user();
+        $challenge = $userService->getUserChallenge($challengeId);
+        return response()->json($challenge, 200);
+    }
 
-        $user->challenge_id = $user->challenge_id ?? 1;
-        if($request->challenge_id < $user->challenge_id)
-        {
-            return response()->json([
-                'message' => "Drago nam je da si se vratio/la ponovo da rijesis ovaj zadatak!",
-                'user' => $user, 
-                'token' => $user->remember_token
-            ],200);
-        }
-
-        try
-        {
-            $user->challenge_id ++;
-            $user->save();
-
-            return response()->json([
-                'message' => 'Uspjesno zavrsen izazov. Svaka cast!',
-                'user' => $user,
-                'token' => $user->remember_token
-            ], 200);
-        } 
-        catch (ModelNotFoundException $e)
-        {
-            return response()->json([
-                'message' => $e
-            ], 404);
-        }
+    public function updateUserChallenge(Request $request, UserService $userService)
+    {
+       $response = $userService->updateUserChallenge($request);
+       return response()->json($response, 200);
     }
 }
