@@ -52,7 +52,7 @@ class User extends Authenticatable
     public function isChallengeAvailable()
     {
         $today = Carbon::now()->format('Y-m-d');
-        $user_updated = Carbon::parse($this->updated_at)->format('Y-m-d');
+        $user_updated = !empty($this->update_user) ? Carbon::parse($this->update_user)->format('Y-m-d') : '1999-01-01';
 
         if ($this->challenge_id == 1 || $this->challenge_id == null) 
         {
@@ -79,11 +79,9 @@ class User extends Authenticatable
         ];
     }
 
-    public function updateUserChallenge($challengeId)
+    public function updateUserChallenge(int $challengeId)
     {
         $this->challenge_id = $this->challenge_id ?? 1;
-        $message = Message::find($this->challenge_id)->pluck("messages")->first();
-        
         if ($challengeId < $this->challenge_id) {
             return [
                 'message' => "Drago nam je da si se vratio/la ponovo da riješiš ovaj zadatak!",
@@ -91,9 +89,11 @@ class User extends Authenticatable
                 'token' => $this->remember_token
             ];
         }
-
+        $today = Carbon::now()->format('Y-m-d');
         try {
+            $message = Message::where("id", $this->challenge_id)->pluck("messages")->first();
             $this->challenge_id++;
+            $this->update_user = $today;
             $this->save();
 
             return [

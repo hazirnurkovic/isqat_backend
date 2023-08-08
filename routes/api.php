@@ -4,6 +4,7 @@ use App\Http\Controllers\AlternativeChallengeController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ChallengeController;
 use App\Http\Controllers\UserController;
+use App\Models\Message;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,7 +20,6 @@ use Illuminate\Support\Facades\Route;
 
 
 //register and login
-
 Route::post('register', [UserController::class, 'register']);
 Route::post('login', [UserController::class, 'login']);
 
