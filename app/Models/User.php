@@ -79,11 +79,9 @@ class User extends Authenticatable
         ];
     }
 
-    public function updateUserChallenge($challengeId)
+    public function updateUserChallenge(int $challengeId)
     {
         $this->challenge_id = $this->challenge_id ?? 1;
-        $message = Message::find($this->challenge_id)->pluck("messages")->first();
-        
         if ($challengeId < $this->challenge_id) {
             return [
                 'message' => "Drago nam je da si se vratio/la ponovo da riješiš ovaj zadatak!",
@@ -93,6 +91,7 @@ class User extends Authenticatable
         }
         $today = Carbon::now()->format('Y-m-d');
         try {
+            $message = Message::where("id", $this->challenge_id)->pluck("messages")->first();
             $this->challenge_id++;
             $this->update_user = $today;
             $this->save();
