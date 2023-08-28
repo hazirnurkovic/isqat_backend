@@ -49,7 +49,7 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public function isChallengeAvailable()
+    public function checkChallengeAvailability()
     {
         $today = Carbon::now()->format('Y-m-d');
         $user_updated = !empty($this->update_user) ? Carbon::parse($this->update_user)->format('Y-m-d') : '1999-01-01';

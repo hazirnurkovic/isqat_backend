@@ -6,22 +6,28 @@ use Illuminate\Http\Request;
 
 class UserService
 {
+
+    protected $user;
+
+    public function __construct()
+    {
+        $this->user = auth()->user();
+    }
+
     public function getUserChallenges()
     {
-        $user = auth()->user();
-        return $user->isChallengeAvailable();
+        
+        return $this->user->checkChallengeAvailability();
     }
 
     public function getUserChallenge($challengeId)
     {
-        $user = auth()->user();
-        return $user->getUserChallenge($challengeId);        
+        return $this->user->getUserChallenge($challengeId);        
     }
 
     public function updateUserChallenge(Request $request)
     {
-        $user = auth()->user();
-        return $user->updateUserChallenge($request->challenge_id);
+        return $this->user->updateUserChallenge($request->challenge_id);
 
     }
 }
