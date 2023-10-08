@@ -19,11 +19,20 @@ class UserController extends Controller
     use HasApiTokens, HasFactory;
     public function register(Request $request)
     {
-        $fields = $request->validate([
-            'username' => 'required|string|unique:users',
-            'email' => 'required|string|email|unique:users',
-            'password' => 'required|string'
-        ]);
+        $fields = $request->validate
+        (
+            [
+                'username' => 'required|string|unique:users',
+                'email' => 'required|string|email|unique:users',
+                'password' => 'required|string'
+            ],
+            [
+                'username.required' => 'Korisničko ime je obavezno polje!',
+                'email.required' => 'Morate popuniti email polje',
+                'email.email' => 'Unesite validnu email adresu',
+                'password.required' => 'Morate unijeti šifru.'
+            ]
+        );
 
 
         $user = User::create([
@@ -40,16 +49,23 @@ class UserController extends Controller
 
     public function login(Request $request)
     {
-        $fields = $request->validate([
+        $fields = $request->validate(
+            [
             'email' => 'required|string|email',
             'password' => 'required|string'
-        ]);
+            ],
+            [
+                'email.required'    => 'Morate popuniti email polje!',
+                'email.email'       => 'Unesite validnu email adresu',
+                'password.required' => 'Morate unijeti šifru'
+            ]
+        );
 
         $user = User::where('email', $fields['email'])->first();
         if(!$user || !Hash::check($fields['password'], $user->password))
         {
             return response()->json([
-                'message' => 'Incorrect email or password'
+                'message' => 'Netačan email ili šifra!'
             ], 401);
         }
         $token = $user->createToken('isqatToken')->plainTextToken;
